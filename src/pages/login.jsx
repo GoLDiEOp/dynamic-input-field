@@ -11,7 +11,7 @@ export default function Login() {
     {
       label: "Email",
       type: "email",
-      value: "",
+      value: "" || [],
     },
   ]);
   const [toggle, setToggle] = useState(false);
@@ -19,7 +19,13 @@ export default function Login() {
   const inputRef = useRef();
   const selectRef = useRef();
 
+  const handleChangeSelect = (options, index) => {
+    const values = [...formValues];
+    values[index].value = options;
+    setFormValues(values);
+  };
   const handleChange = (e, index) => {
+    console.log(e.target.value, index);
     const values = [...formValues];
     values[index].value = e.target.value;
     setFormValues(values);
@@ -59,6 +65,7 @@ export default function Login() {
             key={index}
             objValue={obj}
             onChange={handleChange}
+            handleChangeSelect={handleChangeSelect}
             index={index}
             deleteField={handleDeleteField}
           />
@@ -75,6 +82,7 @@ export default function Login() {
             <select ref={selectRef}>
               <option value="text">Text</option>
               <option value="number">Number</option>
+              <option value="select">Select</option>
               <option value="email">Email</option>
               <option value="password">Password</option>
             </select>
@@ -123,7 +131,16 @@ const Container = styled.div`
     width: 100%;
     display: flex;
   }
+  .select {
+    width: 100%;
+    display: flex;
+  }
   .input > input {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    width: 100%;
+  }
+  .input > select {
     padding: 0.3rem 0.5rem;
     border: 1px solid rgba(0, 0, 0, 0.2);
     width: 100%;
@@ -134,6 +151,14 @@ const Container = styled.div`
   .input > div {
     padding: 0.5rem 1rem;
     background: #e34728;
+    margin-left: 0.5rem;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .input > div.add {
+    padding: 0.5rem 1rem;
+    background: #0c56c4;
     margin-left: 0.5rem;
     color: #fff;
     font-weight: 700;
